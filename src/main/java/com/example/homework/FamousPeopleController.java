@@ -14,6 +14,12 @@ public class FamousPeopleController {
     
     @RequestMapping(value = "/url-to-be-scanned", method = RequestMethod.POST)
     public void urlToBeScanned(@RequestBody String urlToBeScanned) {
+        
+        /* TODO ajuk:
+        1) validate URL
+        2) write unit/integration test
+        */
+        
         System.out.println("url to be scanned: "+urlToBeScanned);
     }
 }
