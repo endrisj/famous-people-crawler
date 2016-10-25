@@ -22,9 +22,17 @@ public class FamousPeopleController {
     public ResponseEntity<Void> urlToBeScanned(@RequestBody String urlToBeScanned) {
         System.out.println("url to be scanned: " + urlToBeScanned);
         
+        /**
+         * TODO:
+         * 1) remove System.out.println or use logger
+         * 2) before saving, check, if CrawlingSource exists
+         *      - IF NO:    create in same transaction. Return HTTP STATUS CREATED
+         *      - IF YES:   return Warning & HTTP STATUS OK
+         * 3) improve unit tests:
+         *      - code coverage & mutation testing
+         *      - think, is all main cases are covered
+         */
         
-
-        // TODO: set URL unique in entity
         CrawlingSource crawlingSource = new CrawlingSource();
         crawlingSource.setUrl(urlToBeScanned);
         crawlingSourceDao.save(crawlingSource);
