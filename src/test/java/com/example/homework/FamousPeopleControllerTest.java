@@ -19,23 +19,27 @@ public class FamousPeopleControllerTest {
     private MockMvc mockMvc;
     
     @Test
-    public void urlToBeScanned_withNotScannedUrl_returnsHttpStatusOkWithoutWarning() throws Exception {
+    public void urlToBeScanned_withNotScannedUrl_returnsHttpStatusCreatedWithoutWarning() throws Exception {
         mockMvc.perform(
                 post("/url-to-be-scanned")
                 .content("http://docs.spring.io/spring/docs/current/javadoc-api/")
             )
-            .andExpect(status().isOk());
-        
-        // TODO: check, that were is no warning
+            .andExpect(status().isCreated())
+            .andExpect(header().doesNotExist("Warning"));
     }
     
-//    @Test
-//    public void urlToBeScanned_correctlySavesUrl() {
-//        throw new UnsupportedOperationException("TODO implement me!");
-//    }
-//    
-//    @Test
-//    public void urlToBeScanned_withNotScannedUrl_returnsHttpStatusOkWithWarning() {
-//        throw new UnsupportedOperationException("TODO implement me!");
-//    }
+    @Test
+    public void urlToBeScanned_correctlySavesUrl() {
+        throw new UnsupportedOperationException("TODO implement me!");
+    }
+    
+    @Test
+    public void urlToBeScanned_withScannedUrl_returnsHttpStatusOkWithWarning() throws Exception {
+        mockMvc.perform(
+                post("/url-to-be-scanned")
+                .content("http://docs.spring.io/spring/docs/current/javadoc-api/")
+            )
+            .andExpect(status().isOk())
+            .andExpect(header().string("Warning", "299 famousPeopleService \"URL was already scanned.\""));
+    }
 }
