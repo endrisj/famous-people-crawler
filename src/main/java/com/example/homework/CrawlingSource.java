@@ -12,8 +12,10 @@ public class CrawlingSource {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
+    
     @Column(unique = true)
     private String url;
+    
     private String repositoryKey;
 
     public long getId() {
