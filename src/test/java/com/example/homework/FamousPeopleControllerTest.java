@@ -68,4 +68,12 @@ public class FamousPeopleControllerTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Warning", "299 famousPeopleService \"URL was already scanned.\""));
     }
+    
+    /**
+     * TODO: write tests:
+     *      1) URL is unregistered. Error returned, and not saved
+     *      2) URL registered, success returned, saved (with famousPeople)
+     *      3) URL registered, success returned, saved (without famousPeople - missing)
+     *      4) URL not provided
+     */
 }

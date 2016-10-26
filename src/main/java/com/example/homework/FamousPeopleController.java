@@ -24,16 +24,16 @@ public class FamousPeopleController {
             httpStatus = HttpStatus.OK;
         }
         return new ResponseEntity<>(responseHeaders, httpStatus);
-        
-        /**
-        * TODO: 
-        * 1) remove System.out.println or use logger 
-        * 2) before saving, check, if CrawlingSource exists 
-        *      - IF NO: create in same transaction. Return HTTP STATUS CREATED 
-        *      - IF YES: return Warning & HTTP STATUS OK
-        * 3) improve unit tests: 
-        *      - code coverage & mutation testing 
-        *      - think, is all main cases are covered
-        */
+    }
+    
+    @RequestMapping(value = "/famous-people-for-url", method = RequestMethod.POST)
+    public ResponseEntity<String> famousPeopleForUrl(@RequestBody FamousPeopleForUrlDto famousPeopleForUrlDto) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        String message = "Save succeeded.";
+        if (!famousPeopleService.saveIfUrlKnown(famousPeopleForUrlDto.getUrl(), famousPeopleForUrlDto.getFamousPeople())) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            message = "URL `"+famousPeopleForUrlDto.getUrl()+"` is unknown.";
+        }
+        return new ResponseEntity<>(message, httpStatus);
     }
 }
