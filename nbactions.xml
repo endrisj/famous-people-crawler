@@ -4,9 +4,9 @@
             <actionName>CUSTOM-pitest</actionName>
             <displayName>pitest</displayName>
             <goals>
-                <goal>-DwithHistory</goal>
+                <!--<goal>-DwithHistory</goal>-->
+                <goal>-DtimeoutConst=12000</goal>
                 <goal>org.pitest:pitest-maven:mutationCoverage</goal>
-                
             </goals>
         </action>
     </actions>
