@@ -15,7 +15,6 @@ public class FamousPeopleService {
      * @param urlToBeScanned
      * @return true if saved
      */
-    @Transactional
     public boolean saveIfNotExists(String urlToBeScanned) {
         if (crawlingSourceDao.existsByUrl(urlToBeScanned)) {
             return false;

@@ -1,5 +1,6 @@
 package com.example.playground;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ public class FamousPerson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private CrawlingSource crawlingSource;
     

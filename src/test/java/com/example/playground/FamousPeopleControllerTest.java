@@ -1,5 +1,8 @@
 package com.example.playground;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -129,5 +132,22 @@ public class FamousPeopleControllerTest {
         verify(crawlingSourceDao).save(argumentCaptor.capture());
         assertEquals(1, crawlingSource.getFamousPeople().size());
         assertEquals("Petras Cvirka", crawlingSource.getFamousPeople().get(0).getName());
+    }
+    
+    @Test
+    public void showAll_returnsAll() throws Exception {
+        CrawlingSource crawlingSource = new CrawlingSource();
+        crawlingSource.setUrl("wikipedia");
+        FamousPerson famousPerson = new FamousPerson();
+        famousPerson.setName("Antanas");
+        crawlingSource.addFamousPerson(famousPerson);
+        List<CrawlingSource> crawlingSources = new ArrayList<>();
+        crawlingSources.add(crawlingSource);
+        when(crawlingSourceDao.findAll()).thenReturn(crawlingSources);
+        mockMvc.perform(get("/url"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].famousPeople", Matchers.hasSize(1)))
+            .andExpect(jsonPath("$[0].url", Matchers.is("wikipedia")))
+            .andExpect(jsonPath("$[0].famousPeople[0].name", Matchers.is("Antanas")));
     }
 }
