@@ -44,9 +44,4 @@ public class FamousPerson {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Override
-    public String toString() {
-        return "FamousPerson{" + "id=" + id + ", name=" + name + '}';
-    }
 }

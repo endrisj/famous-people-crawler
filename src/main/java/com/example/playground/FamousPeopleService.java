@@ -36,6 +36,7 @@ public class FamousPeopleService {
         if (null == crawlingSource) {
             return false;
         }
+        crawlingSource.setIsScanned(true);
         mapFamousPeople2entities(crawlingSource, famousPeople);
         crawlingSourceDao.save(crawlingSource);
         return true;

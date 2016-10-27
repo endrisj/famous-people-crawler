@@ -50,4 +50,9 @@ public class FamousPeopleController {
     public ResponseEntity<CrawlingSource> showOne(@PathVariable("id") long id) {
         return new ResponseEntity<>(crawlingSourceDao.findOne(id), HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/not-finished-urls", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<CrawlingSource>> notFinishedUrls() {
+        return new ResponseEntity<>(crawlingSourceDao.findAllByIsScanned(false), HttpStatus.OK);
+    }
 }

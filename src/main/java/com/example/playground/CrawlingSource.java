@@ -25,6 +25,7 @@ public class CrawlingSource {
     private List<FamousPerson> famousPeople = new ArrayList<>();
     
     private String repositoryKey;
+    private boolean isScanned = false;
 
     public long getId() {
         return id;
@@ -59,8 +60,11 @@ public class CrawlingSource {
         famousPeople.add(famousPerson);
     }
 
-    @Override
-    public String toString() {
-        return "CrawlingSource{" + "id=" + id + ", url=" + url + ", famousPeople=" + famousPeople + ", repositoryKey=" + repositoryKey + '}';
+    public boolean getIsScanned() {
+        return isScanned;
+    }
+
+    public void setIsScanned(boolean isScanned) {
+        this.isScanned = isScanned;
     }
 }

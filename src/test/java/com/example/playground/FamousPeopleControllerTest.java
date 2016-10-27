@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.springframework.http.MediaType;
 
 @RunWith(SpringRunner.class)
@@ -56,6 +56,7 @@ public class FamousPeopleControllerTest {
         ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
         verify(crawlingSourceDao).save(argumentCaptor.capture());
         assertEquals("http://docs.spring.io/spring/docs/current/javadoc-api/", argumentCaptor.getValue().getUrl());
+        assertFalse(argumentCaptor.getValue().getIsScanned());
     }
     
     @Test
@@ -94,8 +95,9 @@ public class FamousPeopleControllerTest {
             .andExpect(status().isOk());
         ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
         verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(1, crawlingSource.getFamousPeople().size());
-        assertEquals("Petras Cvirka", crawlingSource.getFamousPeople().get(0).getName());
+        assertEquals(1, argumentCaptor.getValue().getFamousPeople().size());
+        assertEquals("Petras Cvirka", argumentCaptor.getValue().getFamousPeople().get(0).getName());
+        assertTrue(argumentCaptor.getValue().getIsScanned());
     }
     
     @Test
@@ -111,7 +113,7 @@ public class FamousPeopleControllerTest {
             .andExpect(status().isOk());
         ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
         verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(0, crawlingSource.getFamousPeople().size());
+        assertEquals(0, argumentCaptor.getValue().getFamousPeople().size());
     }
     
     @Test
@@ -130,8 +132,8 @@ public class FamousPeopleControllerTest {
             .andExpect(status().isOk());
         ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
         verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(1, crawlingSource.getFamousPeople().size());
-        assertEquals("Petras Cvirka", crawlingSource.getFamousPeople().get(0).getName());
+        assertEquals(1, argumentCaptor.getValue().getFamousPeople().size());
+        assertEquals("Petras Cvirka", argumentCaptor.getValue().getFamousPeople().get(0).getName());
     }
     
     @Test
