@@ -1,4 +1,4 @@
-package com.example.homework;
+package com.example.playground;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

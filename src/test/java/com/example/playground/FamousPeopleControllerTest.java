@@ -1,4 +1,4 @@
-package com.example.homework;
+package com.example.playground;
 
 import org.junit.After;
 import org.junit.Before;
@@ -75,5 +75,6 @@ public class FamousPeopleControllerTest {
      *      2) URL registered, success returned, saved (with famousPeople)
      *      3) URL registered, success returned, saved (without famousPeople - missing)
      *      4) URL not provided
+     *      5) famousPeople are overwritten
      */
 }

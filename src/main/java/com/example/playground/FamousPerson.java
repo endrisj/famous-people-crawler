@@ -1,4 +1,4 @@
-package com.example.homework;
+package com.example.playground;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

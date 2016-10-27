@@ -1,4 +1,4 @@
-package com.example.homework;
+package com.example.playground;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
