@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
         <action>
-            <actionName>CUSTOM-pitest</actionName>
-            <displayName>pitest</displayName>
+            <actionName>CUSTOM-mutation test</actionName>
+            <displayName>mutation test</displayName>
             <goals>
-                <!--<goal>-DwithHistory</goal>-->
                 <goal>-DtimeoutConst=12000</goal>
                 <goal>org.pitest:pitest-maven:mutationCoverage</goal>
             </goals>

@@ -34,7 +34,7 @@ public class FamousPeopleController {
     public ResponseEntity<String> famousPeopleForUrl(@RequestBody FamousPeopleForUrlDto famousPeopleForUrlDto) {
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "Save succeeded.";
-        if (!famousPeopleService.saveIfUrlKnown(famousPeopleForUrlDto.getUrl(), famousPeopleForUrlDto.getFamousPeople())) {
+        if (!famousPeopleService.saveFamousPeopleIfUrlKnown(famousPeopleForUrlDto.getUrl(), famousPeopleForUrlDto.getFamousPeople())) {
             httpStatus = HttpStatus.BAD_REQUEST;
             message = "URL `"+famousPeopleForUrlDto.getUrl()+"` is unknown.";
         }
@@ -54,5 +54,16 @@ public class FamousPeopleController {
     @RequestMapping(value = "/not-finished-urls", method = RequestMethod.GET)
     public ResponseEntity<Iterable<CrawlingSource>> notFinishedUrls() {
         return new ResponseEntity<>(crawlingSourceDao.findAllByIsScanned(false), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/repository-key-for-url", method = RequestMethod.POST)
+    public ResponseEntity<String> repositoryKeyForUrl(@RequestBody RepositoryKeyForUrlDto repositoryKeyForUrlDto) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        String message = "Save succeeded.";
+        if (!famousPeopleService.saveRepositoryKeyIfUrlKnown(repositoryKeyForUrlDto.getUrl(), repositoryKeyForUrlDto.getRepositoryKey())) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            message = "URL `"+repositoryKeyForUrlDto.getUrl()+"` is unknown.";
+        }
+        return new ResponseEntity<>(message, httpStatus);
     }
 }

@@ -152,4 +152,33 @@ public class FamousPeopleControllerTest {
             .andExpect(jsonPath("$[0].url", Matchers.is("wikipedia")))
             .andExpect(jsonPath("$[0].famousPeople[0].name", Matchers.is("Antanas")));
     }
+    
+    @Test
+    public void repositoryKeyForUrl_withUnregisteredUrl_returnsBadRequest() throws Exception {
+        when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(null);
+        mockMvc.perform(
+                post("/repository-key-for-url")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"repositoryKey\": \"wi\",\"url\": \"wikipedia\"}")
+            )
+            .andExpect(status().isBadRequest());
+        verify(crawlingSourceDao, never()).save(any(CrawlingSource.class));
+    }
+    
+    @Test
+    public void repositoryKeyForUrl_withRegisteredUrl_savesAndReturnsHttpStatusOk() throws Exception {
+        CrawlingSource crawlingSource = new CrawlingSource();
+        crawlingSource.setUrl("wikipedia");
+        when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(crawlingSource);
+        mockMvc.perform(
+                post("/repository-key-for-url")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"repositoryKey\": \"wi\",\"url\": \"wikipedia\"}")
+            )
+            .andExpect(status().isOk());
+        ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
+        verify(crawlingSourceDao).save(argumentCaptor.capture());
+        assertEquals("wi", argumentCaptor.getValue().getRepositoryKey());
+        assertTrue(argumentCaptor.getValue().getIsScanned());
+    }
 }

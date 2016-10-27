@@ -31,7 +31,7 @@ public class FamousPeopleService {
      * @return true if saved
      */
     @Transactional
-    public boolean saveIfUrlKnown(String url, List<String> famousPeople) {
+    public boolean saveFamousPeopleIfUrlKnown(String url, List<String> famousPeople) {
         CrawlingSource crawlingSource = crawlingSourceDao.findOneByUrl(url);
         if (null == crawlingSource) {
             return false;
@@ -49,5 +49,22 @@ public class FamousPeopleService {
             famousPerson.setName(name);
             crawlingSource.addFamousPerson(famousPerson);
         }
+    }
+    
+    /**
+     * @param url
+     * @param repositoryKey
+     * @return true if saved
+     */
+    @Transactional
+    public boolean saveRepositoryKeyIfUrlKnown(String url, String repositoryKey) {
+        CrawlingSource crawlingSource = crawlingSourceDao.findOneByUrl(url);
+        if (null == crawlingSource) {
+            return false;
+        }
+        crawlingSource.setIsScanned(true);
+        crawlingSource.setRepositoryKey(repositoryKey);
+        crawlingSourceDao.save(crawlingSource);
+        return true;
     }
 }
