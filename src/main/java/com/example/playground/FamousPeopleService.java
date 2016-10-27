@@ -43,6 +43,7 @@ public class FamousPeopleService {
     }
     
     private void mapFamousPeople2entities(CrawlingSource crawlingSource, List<String> famousPeople) {
+        crawlingSource.getFamousPeople().clear();
         for (String name : famousPeople) {
             FamousPerson famousPerson = new FamousPerson();
             famousPerson.setName(name);

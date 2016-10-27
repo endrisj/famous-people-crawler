@@ -21,7 +21,7 @@ public class CrawlingSource {
     @Column(unique = true)
     private String url;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "crawlingSource", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "crawlingSource", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<FamousPerson> famousPeople = new ArrayList<>();
     
     private String repositoryKey;
@@ -52,10 +52,6 @@ public class CrawlingSource {
 
     public List<FamousPerson> getFamousPeople() {
         return famousPeople;
-    }
-
-    public void addFamousPeople(List<FamousPerson> famousPeople) {
-        this.famousPeople = famousPeople;
     }
     
     public void addFamousPerson(FamousPerson famousPerson) {
