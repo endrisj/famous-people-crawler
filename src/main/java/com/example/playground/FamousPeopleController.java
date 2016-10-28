@@ -42,7 +42,7 @@ public class FamousPeopleController {
     }
     
     @RequestMapping(value = "/url", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<CrawlingSource>> showAll() {
+    public ResponseEntity<Iterable<CrawlingSource>> showAll() {    
         return new ResponseEntity<>(crawlingSourceDao.findAll(), HttpStatus.OK);
     }
     

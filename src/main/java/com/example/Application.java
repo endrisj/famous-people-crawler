@@ -1,8 +1,11 @@
 package com.example;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -11,13 +14,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-public class Application {
+public class Application extends WebMvcConfigurerAdapter {
+    
+    @Autowired
+    private MetricsLoggerInterceptor metricsLoggerInterceptor;
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(metricsLoggerInterceptor);
     }
 
     @Bean
