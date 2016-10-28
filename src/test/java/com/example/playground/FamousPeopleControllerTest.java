@@ -79,11 +79,10 @@ public class FamousPeopleControllerTest {
                 .content("{\"famousPeople\": [\"Petras Cvirka\"],\"url\": \"wikipedia\"}")
             )
             .andExpect(status().isBadRequest());
-        verify(crawlingSourceDao, never()).save(any(CrawlingSource.class));
     }
     
     @Test
-    public void famousPeopleForUrl_withRegisteredUrlAndFamousPeople_savesAndReturnsHttpStatusOk() throws Exception {
+    public void famousPeopleForUrl_withRegisteredUrlAndFamousPeople_returnsHttpStatusOk() throws Exception {
         CrawlingSource crawlingSource = new CrawlingSource();
         crawlingSource.setUrl("wikipedia");
         when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(crawlingSource);
@@ -93,15 +92,10 @@ public class FamousPeopleControllerTest {
                 .content("{\"famousPeople\": [\"Petras Cvirka\"],\"url\": \"wikipedia\"}")
             )
             .andExpect(status().isOk());
-        ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
-        verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(1, argumentCaptor.getValue().getFamousPeople().size());
-        assertEquals("Petras Cvirka", argumentCaptor.getValue().getFamousPeople().get(0).getName());
-        assertTrue(argumentCaptor.getValue().getIsScanned());
     }
     
     @Test
-    public void famousPeopleForUrl_withRegisteredUrlAndWithoutFamousPeople_savesAndReturnsHttpStatusOk() throws Exception {
+    public void famousPeopleForUrl_withRegisteredUrlAndWithoutFamousPeople_returnsHttpStatusOk() throws Exception {
         CrawlingSource crawlingSource = new CrawlingSource();
         crawlingSource.setUrl("wikipedia");
         when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(crawlingSource);
@@ -111,29 +105,6 @@ public class FamousPeopleControllerTest {
                 .content("{\"famousPeople\": [],\"url\": \"wikipedia\"}")
             )
             .andExpect(status().isOk());
-        ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
-        verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(0, argumentCaptor.getValue().getFamousPeople().size());
-    }
-    
-    @Test
-    public void famousPeopleForUrl_withRegisteredUrlAndFamousPeople_overwritesAndReturnsHttpStatusOk() throws Exception {
-        CrawlingSource crawlingSource = new CrawlingSource();
-        crawlingSource.setUrl("wikipedia");
-        FamousPerson famousPerson = new FamousPerson();
-        famousPerson.setName("Antanas");
-        crawlingSource.addFamousPerson(famousPerson);
-        when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(crawlingSource);
-        mockMvc.perform(
-                post("/famous-people-for-url")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"famousPeople\": [\"Petras Cvirka\"],\"url\": \"wikipedia\"}")
-            )
-            .andExpect(status().isOk());
-        ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
-        verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals(1, argumentCaptor.getValue().getFamousPeople().size());
-        assertEquals("Petras Cvirka", argumentCaptor.getValue().getFamousPeople().get(0).getName());
     }
     
     @Test
@@ -162,11 +133,10 @@ public class FamousPeopleControllerTest {
                 .content("{\"repositoryKey\": \"wi\",\"url\": \"wikipedia\"}")
             )
             .andExpect(status().isBadRequest());
-        verify(crawlingSourceDao, never()).save(any(CrawlingSource.class));
     }
     
     @Test
-    public void repositoryKeyForUrl_withRegisteredUrl_savesAndReturnsHttpStatusOk() throws Exception {
+    public void repositoryKeyForUrl_withRegisteredUrl_returnsHttpStatusOk() throws Exception {
         CrawlingSource crawlingSource = new CrawlingSource();
         crawlingSource.setUrl("wikipedia");
         when(crawlingSourceDao.findOneByUrl("wikipedia")).thenReturn(crawlingSource);
@@ -176,9 +146,5 @@ public class FamousPeopleControllerTest {
                 .content("{\"repositoryKey\": \"wi\",\"url\": \"wikipedia\"}")
             )
             .andExpect(status().isOk());
-        ArgumentCaptor<CrawlingSource> argumentCaptor = ArgumentCaptor.forClass(CrawlingSource.class);
-        verify(crawlingSourceDao).save(argumentCaptor.capture());
-        assertEquals("wi", argumentCaptor.getValue().getRepositoryKey());
-        assertTrue(argumentCaptor.getValue().getIsScanned());
     }
 }

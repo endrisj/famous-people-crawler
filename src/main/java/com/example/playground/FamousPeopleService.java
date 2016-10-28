@@ -11,35 +11,38 @@ public class FamousPeopleService {
     @Autowired
     private CrawlingSourceDao crawlingSourceDao;
     
+    FamousPeopleService(CrawlingSourceDao crawlingSourceDao) {
+        this.crawlingSourceDao = crawlingSourceDao;
+    }
+    
     /**
      * @param urlToBeScanned
-     * @return true if saved
+     * @return CrawlingSource if saved, else null
      */
-    public boolean saveIfNotExists(String urlToBeScanned) {
+    public CrawlingSource saveIfNotExists(String urlToBeScanned) {
         if (crawlingSourceDao.existsByUrl(urlToBeScanned)) {
-            return false;
+            return null;
         }
         CrawlingSource crawlingSource = new CrawlingSource();
         crawlingSource.setUrl(urlToBeScanned);
         crawlingSourceDao.save(crawlingSource);
-        return true;
+        return crawlingSource;
     }
     
     /**
      * @param url
      * @param famousPeople
-     * @return true if saved
+     * @return CrawlingSource if saved, else null
      */
     @Transactional
-    public boolean saveFamousPeopleIfUrlKnown(String url, List<String> famousPeople) {
+    public CrawlingSource saveFamousPeopleIfUrlKnown(String url, List<String> famousPeople) {
         CrawlingSource crawlingSource = crawlingSourceDao.findOneByUrl(url);
         if (null == crawlingSource) {
-            return false;
+            return null;
         }
         crawlingSource.setIsScanned(true);
         mapFamousPeople2entities(crawlingSource, famousPeople);
-        crawlingSourceDao.save(crawlingSource);
-        return true;
+        return crawlingSource;
     }
     
     private void mapFamousPeople2entities(CrawlingSource crawlingSource, List<String> famousPeople) {
@@ -54,17 +57,16 @@ public class FamousPeopleService {
     /**
      * @param url
      * @param repositoryKey
-     * @return true if saved
+     * @return CrawlingSource if saved, else null
      */
     @Transactional
-    public boolean saveRepositoryKeyIfUrlKnown(String url, String repositoryKey) {
+    public CrawlingSource saveRepositoryKeyIfUrlKnown(String url, String repositoryKey) {
         CrawlingSource crawlingSource = crawlingSourceDao.findOneByUrl(url);
         if (null == crawlingSource) {
-            return false;
+            return null;
         }
         crawlingSource.setIsScanned(true);
         crawlingSource.setRepositoryKey(repositoryKey);
-        crawlingSourceDao.save(crawlingSource);
-        return true;
+        return crawlingSource;
     }
 }

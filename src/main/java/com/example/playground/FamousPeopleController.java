@@ -23,7 +23,7 @@ public class FamousPeopleController {
     public ResponseEntity<Void> urlToBeScanned(@RequestBody String urlToBeScanned) {
         HttpHeaders responseHeaders = new HttpHeaders();
         HttpStatus httpStatus = HttpStatus.CREATED;
-        if (!famousPeopleService.saveIfNotExists(urlToBeScanned)) {
+        if (null == famousPeopleService.saveIfNotExists(urlToBeScanned)) {
             responseHeaders.set("Warning", "299 famousPeopleService \"URL was already scanned.\"");
             httpStatus = HttpStatus.OK;
         }
@@ -34,7 +34,7 @@ public class FamousPeopleController {
     public ResponseEntity<String> famousPeopleForUrl(@RequestBody FamousPeopleForUrlDto famousPeopleForUrlDto) {
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "Save succeeded.";
-        if (!famousPeopleService.saveFamousPeopleIfUrlKnown(famousPeopleForUrlDto.getUrl(), famousPeopleForUrlDto.getFamousPeople())) {
+        if (null == famousPeopleService.saveFamousPeopleIfUrlKnown(famousPeopleForUrlDto.getUrl(), famousPeopleForUrlDto.getFamousPeople())) {
             httpStatus = HttpStatus.BAD_REQUEST;
             message = "URL `"+famousPeopleForUrlDto.getUrl()+"` is unknown.";
         }
@@ -60,7 +60,7 @@ public class FamousPeopleController {
     public ResponseEntity<String> repositoryKeyForUrl(@RequestBody RepositoryKeyForUrlDto repositoryKeyForUrlDto) {
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "Save succeeded.";
-        if (!famousPeopleService.saveRepositoryKeyIfUrlKnown(repositoryKeyForUrlDto.getUrl(), repositoryKeyForUrlDto.getRepositoryKey())) {
+        if (null == famousPeopleService.saveRepositoryKeyIfUrlKnown(repositoryKeyForUrlDto.getUrl(), repositoryKeyForUrlDto.getRepositoryKey())) {
             httpStatus = HttpStatus.BAD_REQUEST;
             message = "URL `"+repositoryKeyForUrlDto.getUrl()+"` is unknown.";
         }
